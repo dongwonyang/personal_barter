@@ -10,10 +10,10 @@ import android.widget.EditText
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import com.example.personal_barter.MainActivityDir.MainActivity
+import com.example.personal_barter.MainActivityDir.UserInfo
 import com.example.personal_barter.R
 
 class SignInActivity : AppCompatActivity() {
-    private lateinit var signViewModel: SignViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -24,16 +24,15 @@ class SignInActivity : AppCompatActivity() {
         val buttonSignIn = findViewById<Button>(R.id.button_signIn)
         val buttonSignUp = findViewById<Button>(R.id.button_signUp)
 
-        signViewModel = ViewModelProvider(this, SignViewModelFactory()).get(SignViewModel::class.java)
 
         buttonSignIn.setOnClickListener {
-            val ID = editTextID.text.toString()
-            val PW = editTextPW.text.toString()
-            if(ID.isEmpty() || PW.isEmpty()){
+            val id = editTextID.text.toString()
+            val pw = editTextPW.text.toString()
+            if(id.isEmpty() || pw.isEmpty()){
                 Toast.makeText(this, "회원 정보를 입력해 주세요.", Toast.LENGTH_SHORT).show()
             } else{
-                signViewModel.putUserInfo(ID, PW)
                 val intent = Intent(this, MainActivity::class.java)
+                UserInfo.singIn(id, pw)
                 startActivity(intent)
             }
         }

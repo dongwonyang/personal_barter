@@ -21,7 +21,6 @@ import java.util.*
 import kotlin.math.sign
 
 class MainActivity : AppCompatActivity() {
-    private lateinit var signViewModel : SignViewModel
     private var timer: Timer? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -59,7 +58,6 @@ class MainActivity : AppCompatActivity() {
             }
         }, 3000, 3000) // 3초마다 페이지 변경, 시작 전 3초 중간 시간 3초
 
-        signViewModel = ViewModelProvider(this, SignViewModelFactory()).get(SignViewModel::class.java)
 
     }
 
@@ -88,9 +86,7 @@ class MainActivity : AppCompatActivity() {
                 return true
             }
             R.id.toolbar_info -> {
-
-                Log.d("viewModel", signViewModel.getUserInfo().toString())
-                if (!signViewModel.isSingIn()) {
+                if(!UserInfo.isSingIn()) {
                     val intent = Intent(this, SignInActivity::class.java)
                     startActivity(intent)
                 }
