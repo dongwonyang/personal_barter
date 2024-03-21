@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <TextView
+        android:id="@+id/textView_dialog_userInfo_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:text="이름: "
+        style="@style/textTitle"/>
+
+    <TextView
+        android:id="@+id/textView_dialog_userInfo_address"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/textView_dialog_userInfo_name"
+        android:text="주소: "
+        style="@style/textTitle"/>
+
+    <TextView
+        android:id="@+id/textView_dialog_userInfo_pw"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/textView_dialog_userInfo_address"
+        android:text="PW: "
+        style="@style/textTitle"/>
+
+    <EditText
+        android:id="@+id/editText_dialog_name_modify"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf = "@+id/textView_dialog_userInfo_name"
+        app:layout_constraintStart_toEndOf="@id/textView_dialog_userInfo_name"
+        app:layout_constraintTop_toTopOf="@+id/textView_dialog_userInfo_name"
+        android:textColorHint="@color/hintColor"
+        android:inputType="text"
+        app:layout_constraintWidth_percent="0.6" />
+
+    <EditText
+        android:id="@+id/editText_dialog_address_modify"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="@+id/textView_dialog_userInfo_address"
+        app:layout_constraintEnd_toEndOf="@+id/editText_dialog_name_modify"
+        app:layout_constraintStart_toEndOf="@id/textView_dialog_userInfo_address"
+        app:layout_constraintTop_toTopOf="@+id/textView_dialog_userInfo_address"
+        android:textColorHint="@color/hintColor"
+        android:inputType="text"
+        app:layout_constraintWidth_percent="0.6" />
+
+    <EditText
+        android:id="@+id/editText_dialog_pw_modify"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="@+id/textView_dialog_userInfo_pw"
+        app:layout_constraintEnd_toEndOf="@+id/editText_dialog_address_modify"
+        app:layout_constraintTop_toTopOf="@+id/textView_dialog_userInfo_pw"
+        android:textColorHint="@color/hintColor"
+        android:inputType="text"
+        app:layout_constraintWidth_percent="0.6" />
+
+    <Button
+        android:id="@+id/button_dialog_modify"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editText_dialog_pw_modify"
+        android:layout_marginTop="20dp"
+        android:text="확인"/>
+</androidx.constraintlayout.widget.ConstraintLayout>

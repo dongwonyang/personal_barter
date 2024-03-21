@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <TextView
+        android:id="@+id/textView_frag_userInfo_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_margin="20dp"
+        android:text="이름: 김철수"
+        style="@style/textTitle"/>
+    <TextView
+        android:id="@+id/textView_frag_userInfo_id"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/textView_frag_userInfo_name"
+        android:layout_margin="20dp"
+        android:text="ID: "
+        style="@style/textTitle"/>
+
+    <TextView
+        android:id="@+id/textView_frag_userInfo_address"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/textView_frag_userInfo_id"
+        android:layout_margin="20dp"
+        android:text="주소: "
+        style="@style/textTitle"/>
+
+
+    <TextView
+        android:id="@+id/textView_frag_userInfo_grade"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/textView_frag_userInfo_address"
+        android:layout_margin="20dp"
+        android:text="등급: "
+        style="@style/textTitle"/>
+
+    <Button
+        android:id="@+id/button_frag_userInfo_modify"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/textView_frag_userInfo_grade"
+        android:background="@drawable/button_sing_in"
+        android:text="회원정보 수정"
+        android:textStyle="bold"
+        android:layout_marginTop="30dp"/>
+</androidx.constraintlayout.widget.ConstraintLayout>

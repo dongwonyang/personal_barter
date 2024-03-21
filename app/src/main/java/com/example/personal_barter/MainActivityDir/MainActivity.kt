@@ -21,6 +21,7 @@ import java.util.*
 
 class MainActivity : AppCompatActivity() {
     private var timer: Timer? = null
+    private lateinit var viewPager: ViewPager2
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -31,7 +32,7 @@ class MainActivity : AppCompatActivity() {
         supportActionBar?.setDisplayShowTitleEnabled(true)
         toolbar.title = "Tool Bar"
 
-        val viewPager = findViewById<ViewPager2>(R.id.viewPager_event_banner)
+        viewPager = findViewById<ViewPager2>(R.id.viewPager_event_banner)
         viewPager.adapter = MainViewPagerAdapter(this)
         viewPager.isUserInputEnabled = true
 
@@ -71,6 +72,16 @@ class MainActivity : AppCompatActivity() {
         if (timer == null) {
             timer = Timer()
         }
+        timer?.schedule(object : TimerTask() {
+            override fun run() {
+                runOnUiThread {
+                    Log.d("timer check", "dd")
+                    if (viewPager.currentItem + 1 < viewPager.adapter?.itemCount ?: 0)
+                        viewPager.currentItem += 1
+                    else viewPager.currentItem = 0
+                }
+            }
+        }, 3000, 3000)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
