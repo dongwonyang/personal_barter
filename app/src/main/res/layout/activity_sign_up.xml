@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".SignActivityDir.SignUpActivity">
+
+    <ImageView
+        android:id="@+id/imageView_signUp_logo"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="10dp"
+        android:src="@drawable/freelogo"
+        app:layout_constraintHeight_percent="0.3"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintHeight_percent="0.4"
+        app:layout_constraintTop_toBottomOf="@id/imageView_signUp_logo">
+
+        <TextView
+            android:id="@+id/textView5"
+            style="@style/textTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="10dp"
+            android:text="ID"
+            app:layout_constraintBottom_toBottomOf="@+id/editText_signUp_ID"
+            app:layout_constraintEnd_toStartOf="@id/editText_signUp_ID"
+            app:layout_constraintTop_toTopOf="@+id/editText_signUp_ID" />
+
+        <TextView
+            style="@style/textTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="10dp"
+            android:text="PW"
+            app:layout_constraintBottom_toBottomOf="@+id/editText_signUp_PW"
+            app:layout_constraintEnd_toStartOf="@id/editText_signUp_PW"
+            app:layout_constraintTop_toTopOf="@+id/editText_signUp_PW" />
+
+        <EditText
+            android:id="@+id/editText_signUp_PW"
+            android:layout_width="288dp"
+            android:layout_height="wrap_content"
+            android:inputType="textPassword"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.78"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/editText_signUp_ID"
+            app:layout_constraintWidth_percent="0.7" />
+
+        <EditText
+            android:id="@+id/editText_signUp_name"
+            android:layout_width="288dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toTopOf="@+id/editText_signUp_ID"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.78"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintWidth_percent="0.7" />
+
+        <EditText
+            android:id="@+id/editText_signUp_ID"
+            android:layout_width="288dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toTopOf="@+id/editText_signUp_PW"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.78"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/editText_signUp_name"
+            app:layout_constraintWidth_percent="0.7" />
+
+        <TextView
+            android:id="@+id/textView4"
+            style="@style/textTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Name"
+            app:layout_constraintBottom_toBottomOf="@+id/editText_signUp_name"
+            app:layout_constraintEnd_toStartOf="@id/editText_signUp_name"
+            app:layout_constraintTop_toTopOf="@+id/editText_signUp_name"
+            android:layout_marginEnd="10dp"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    <Button
+        android:id="@+id/button_signUp_signUp"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout"
+        android:background="@drawable/button_sing_in"
+        android:text="회원가입"
+        android:textStyle="bold"
+        app:layout_constraintWidth_percent="0.7" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

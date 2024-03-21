@@ -24,6 +24,11 @@ class SignInActivity : AppCompatActivity() {
         val buttonSignIn = findViewById<Button>(R.id.button_signIn)
         val buttonSignUp = findViewById<Button>(R.id.button_signUp)
 
+        val idString = intent?.getStringExtra("ID") ?: ""
+        editTextID.text = idString.toEditable()
+        val pwString = intent?.getStringExtra("ID") ?: ""
+        editTextPW.text = pwString.toEditable()
+
 
         buttonSignIn.setOnClickListener {
             val id = editTextID.text.toString()
@@ -33,11 +38,17 @@ class SignInActivity : AppCompatActivity() {
             } else{
                 val intent = Intent(this, MainActivity::class.java)
                 UserInfo.singIn(id, pw)
+                intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
                 startActivity(intent)
             }
         }
 
         buttonSignUp.setOnClickListener {
+            val intent = Intent(this, SignUpActivity::class.java)
+            startActivity(intent)
         }
     }
+
+    fun String.toEditable(): Editable = Editable.Factory.getInstance().newEditable(this)
+
 }
