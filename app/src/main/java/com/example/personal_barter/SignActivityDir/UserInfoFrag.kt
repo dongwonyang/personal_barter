@@ -45,6 +45,8 @@ class UserInfoFrag: Fragment() {
                 textViewId.text = "ID: " + UserInfo.getId()
                 textViewAddress.text = "주소: 성동구"
 
+
+
                 val buttonModify = view.findViewById<Button>(R.id.button_frag_userInfo_modify)
                 buttonModify.setOnClickListener {
                     val dialog = Dialog(view.context)

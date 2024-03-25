@@ -11,17 +11,20 @@ import android.widget.Button
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import androidx.viewpager2.widget.ViewPager2
 import com.example.personal_barter.R
 import com.example.personal_barter.SignActivityDir.SignInActivity
 import com.example.personal_barter.SignActivityDir.UserInfoActivity
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
+import kotlinx.coroutines.*
 import java.util.*
 
 class MainActivity : AppCompatActivity() {
     private var timer: Timer? = null
     private lateinit var viewPager: ViewPager2
+    private lateinit var job: Job
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -46,32 +49,22 @@ class MainActivity : AppCompatActivity() {
 //            tab.text = "Page ${position + 1}"
         }.attach()
 
-        timer = Timer()
-        timer?.schedule(object : TimerTask() {
-            override fun run() {
-                runOnUiThread {
-                    Log.d("timer check", "dd")
-                    if (viewPager.currentItem + 1 < viewPager.adapter?.itemCount ?: 0)
-                        viewPager.currentItem += 1
-                    else viewPager.currentItem = 0
-                }
-            }
-        }, 3000, 3000) // 3초마다 페이지 변경, 시작 전 3초 중간 시간 3초
-
-
-    }
-
-    override fun onStop() {
-        super.onStop()
-        timer?.cancel()
-        timer = null
-    }
-
-    override fun onRestart() {
-        super.onRestart()
-        if (timer == null) {
-            timer = Timer()
+        val refreshLayout = findViewById<SwipeRefreshLayout>(R.id.swipeRefreshLayout_main)
+        refreshLayout.setOnRefreshListener {
+            recyclerView.adapter = MainRecyclerViewAdapter(getMainRankData())
+            refreshLayout.isRefreshing = false
         }
+        job = CoroutineScope(Dispatchers.Main).launch {
+            while (true) {
+                delay(3000)
+                Log.d("coroutine", "dd")
+                if (viewPager.currentItem + 1 < viewPager.adapter?.itemCount ?: 0)
+                    viewPager.currentItem += 1
+                else viewPager.currentItem = 0
+            }
+        }
+
+//        timer = Timer()
         timer?.schedule(object : TimerTask() {
             override fun run() {
                 runOnUiThread {
@@ -82,8 +75,26 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }, 3000, 3000)
+
     }
 
+    override fun onStop() {
+        super.onStop()
+        job.cancel()
+    }
+
+    override fun onRestart() {
+        super.onRestart()
+        job = CoroutineScope(Dispatchers.Main).launch {
+            while (true) {
+                delay(3000)
+                Log.d("coroutine", "dd")
+                if (viewPager.currentItem + 1 < viewPager.adapter?.itemCount ?: 0)
+                    viewPager.currentItem += 1
+                else viewPager.currentItem = 0
+            }
+        }
+    }
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.top_toolbar_menu, menu)
         menuInflater.inflate(R.menu.bottom_navigate_menu, menu)
@@ -102,7 +113,7 @@ class MainActivity : AppCompatActivity() {
                 return true
             }
             R.id.toolbar_info -> {
-                if(!UserInfo.isSingIn()) {
+                if (!UserInfo.isSingIn()) {
                     val intent = Intent(this, SignInActivity::class.java)
                     startActivity(intent)
                 } else {
