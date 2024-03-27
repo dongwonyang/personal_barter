@@ -28,9 +28,10 @@ import android.provider.MediaStore.Audio.Media
 import android.view.View
 import androidx.core.app.ActivityCompat
 import androidx.core.content.FileProvider
+import com.example.personal_barter.MainActivityDir.MainActivity
 
 class SaleActivity : AppCompatActivity() {
-    val imagePicture:ImageView by lazy { findViewById(R.id.imageView_sale_picture) }
+    val imagePicture: ImageView by lazy { findViewById(R.id.imageView_sale_picture) }
     val REQ_GALLERY = 1001
     val REQ_CAMEAR = 1002
     val REQ_CAMERA_PERMISSION = 1112
@@ -40,13 +41,26 @@ class SaleActivity : AppCompatActivity() {
         setContentView(R.layout.activity_sale)
         val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottomnavigation_sale)
         bottomNavigationView.selectedItemId = R.id.navigation_sale
+        bottomNavigationView.setOnNavigationItemSelectedListener {
+            when (it.itemId) {
+                R.id.navigation_home -> {
+                    val intent = Intent(this, MainActivity::class.java)
+                    startActivity(intent)
+                    true
+                }
+                R.id.navigation_purchase -> {
+                    true
+                }
+                else -> false
+            }
+        }
+
 
         val toolbar = findViewById<Toolbar>(R.id.toolbar_sale)
         setSupportActionBar(toolbar)
-
     }
-    
-    fun onImageViewClicked(view: View){
+
+    fun onImageViewClicked(view: View) {
         val dialog = Dialog(this)
         dialog.setContentView(R.layout.dialog_picture)
         dialog.show()
@@ -64,20 +78,24 @@ class SaleActivity : AppCompatActivity() {
         }
     }
 
-    private fun selectCamera(){
+    private fun selectCamera() {
         var permission = ContextCompat.checkSelfPermission(this, android.Manifest.permission.CAMERA)
-        if(permission == PackageManager.PERMISSION_DENIED){
+        if (permission == PackageManager.PERMISSION_DENIED) {
             ActivityCompat.requestPermissions(
                 this,
                 arrayOf(android.Manifest.permission.CAMERA),
                 REQ_CAMERA_PERMISSION
             )
-        }else{
+        } else {
             val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-            if(cameraIntent.resolveActivity(packageManager) != null){
+            if (cameraIntent.resolveActivity(packageManager) != null) {
                 val photoFile: File? = createImageFile()
-                photoFile?.let{
-                    photoUri = FileProvider.getUriForFile(this, applicationContext.packageName+".provider", it)
+                photoFile?.let {
+                    photoUri = FileProvider.getUriForFile(
+                        this,
+                        applicationContext.packageName + ".provider",
+                        it
+                    )
                     cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri)
                     startActivityForResult(cameraIntent, REQ_CAMEAR)
                 }
@@ -85,32 +103,33 @@ class SaleActivity : AppCompatActivity() {
         }
 
     }
-    private fun createImageFile(): File?{
+
+    private fun createImageFile(): File? {
         val timeStamp = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault())
         val imageFIleName = "JPEG_${timeStamp}_"
         val storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES)
         return File.createTempFile(imageFIleName, ".jpg", storageDir)
     }
-    private fun selectGallery(){
+
+    private fun selectGallery() {
         val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
         startActivityForResult(intent, REQ_GALLERY)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if(resultCode == RESULT_OK){
-            when(requestCode){
-                REQ_CAMEAR->{
+        if (resultCode == RESULT_OK) {
+            when (requestCode) {
+                REQ_CAMEAR -> {
                     imagePicture.setImageURI(photoUri)
                 }
-                REQ_GALLERY->{
+                REQ_GALLERY -> {
                     val uri: Uri? = data?.data
                     imagePicture.setImageURI(uri)
                 }
             }
         }
     }
-
 
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
