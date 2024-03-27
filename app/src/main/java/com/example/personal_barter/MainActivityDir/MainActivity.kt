@@ -14,8 +14,10 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import androidx.viewpager2.widget.ViewPager2
 import com.example.personal_barter.R
+import com.example.personal_barter.SaleDir.SaleActivity
 import com.example.personal_barter.SignActivityDir.SignInActivity
 import com.example.personal_barter.SignActivityDir.UserInfoActivity
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import kotlinx.coroutines.*
@@ -76,6 +78,23 @@ class MainActivity : AppCompatActivity() {
             }
         }, 3000, 3000)
 
+        val bottomNaviBar = findViewById<BottomNavigationView>(R.id.bottomnavigation_main)
+        bottomNaviBar.setOnNavigationItemSelectedListener { item->
+            when(item.itemId){
+                R.id.navigation_home ->{
+                    true
+                }
+                R.id.navigation_sale -> {
+                    val intent = Intent(this, SaleActivity::class.java)
+                    startActivity(intent)
+                    true
+                }
+                R.id.navigation_purchase ->{
+                    true
+                }
+                else -> false
+            }
+        }
     }
 
     override fun onStop() {
@@ -97,7 +116,6 @@ class MainActivity : AppCompatActivity() {
     }
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.top_toolbar_menu, menu)
-        menuInflater.inflate(R.menu.bottom_navigate_menu, menu)
         return true
     }
 
@@ -121,12 +139,6 @@ class MainActivity : AppCompatActivity() {
                     startActivity(intent)
                 }
                 return true
-            }
-            R.id.navigation_home -> {
-            }
-            R.id.navigation_purchase -> {
-            }
-            R.id.navigation_sale -> {
             }
         }
         return super.onOptionsItemSelected(item)

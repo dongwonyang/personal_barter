@@ -21,6 +21,8 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:itemIconTint="@drawable/navi_selector"
+        app:itemTextColor="@drawable/navi_selector"
         app:menu="@menu/bottom_navigate_menu" />
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
