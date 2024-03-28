@@ -25,10 +25,15 @@ import java.util.*
 import android.Manifest
 import android.content.pm.PackageManager
 import android.provider.MediaStore.Audio.Media
+import android.util.Log
 import android.view.View
+import android.widget.EditText
 import androidx.core.app.ActivityCompat
 import androidx.core.content.FileProvider
 import com.example.personal_barter.MainActivityDir.MainActivity
+import com.google.firebase.database.ktx.database
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.ktx.storage
 
 class SaleActivity : AppCompatActivity() {
     val imagePicture: ImageView by lazy { findViewById(R.id.imageView_sale_picture) }
@@ -36,6 +41,9 @@ class SaleActivity : AppCompatActivity() {
     val REQ_CAMEAR = 1002
     val REQ_CAMERA_PERMISSION = 1112
     var photoUri: Uri? = null
+
+    val storageRef = Firebase.storage.reference
+    val databaseRef = Firebase.database.reference
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_sale)
@@ -49,16 +57,36 @@ class SaleActivity : AppCompatActivity() {
                     true
                 }
                 R.id.navigation_purchase -> {
+                    val intent = Intent(this, MainActivity::class.java)
+                    startActivity(intent)
                     true
                 }
                 else -> false
             }
         }
 
-
         val toolbar = findViewById<Toolbar>(R.id.toolbar_sale)
         setSupportActionBar(toolbar)
+
+
+        val buttonSubmit = findViewById<Button>(R.id.button_sale_submit)
+        val editTextComment = findViewById<EditText>(R.id.editText_sale_comment)
+        buttonSubmit.setOnClickListener {
+            if(photoUri != null) {
+                uploadDataToFirebaseStorage(photoUri!!, editTextComment.text.toString())
+                Toast.makeText(this, "업로드 성공", Toast.LENGTH_SHORT).show()
+            }
+            else Toast.makeText(this, "사진을 등록해 주세요.", Toast.LENGTH_LONG).show()
+            val intent = Intent(this, MainActivity::class.java)
+            startActivity(intent)
+
+//            val db = Firebase.database
+//            val myRef = db.getReference("first")
+//            myRef.push().setValue("first")
+        }
     }
+
+
 
     fun onImageViewClicked(view: View) {
         val dialog = Dialog(this)
@@ -125,6 +153,7 @@ class SaleActivity : AppCompatActivity() {
                 }
                 REQ_GALLERY -> {
                     val uri: Uri? = data?.data
+                    photoUri = uri
                     imagePicture.setImageURI(uri)
                 }
             }
@@ -160,6 +189,30 @@ class SaleActivity : AppCompatActivity() {
             }
         }
         return super.onOptionsItemSelected(item)
+    }
+
+
+    private fun uploadDataToFirebaseStorage(imageUri: Uri, comment: String) {
+        val imageRef = storageRef.child("images/${UUID.randomUUID()}")
+
+        val uploadTask = imageRef.putFile(imageUri)
+
+        uploadTask.addOnSuccessListener { taskSnapshot ->
+            imageRef.downloadUrl.addOnSuccessListener { uri ->
+                val imageUrl = uri.toString()
+                val imageDownloadUrl = uri.toString()
+                val data = hashMapOf(
+                    "comment" to comment,
+                    "imageUrl" to imageDownloadUrl
+                )
+                databaseRef.child("data").push().setValue(data)
+                Log.d("Upload success", "Image URL: $imageUrl")
+            }.addOnFailureListener { exception ->
+                Log.e("Upload failed", "Failed to get download URL: $exception")
+            }
+        }.addOnFailureListener { exception ->
+            Log.e("Upload failed", "Failed to upload image: $exception")
+        }
     }
 }
 

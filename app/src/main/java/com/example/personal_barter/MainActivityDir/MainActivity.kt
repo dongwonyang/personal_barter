@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import androidx.viewpager2.widget.ViewPager2
+import com.example.personal_barter.PurchaseDir.PurchaseActivity
 import com.example.personal_barter.R
 import com.example.personal_barter.SaleDir.SaleActivity
 import com.example.personal_barter.SignActivityDir.SignInActivity
@@ -90,6 +91,8 @@ class MainActivity : AppCompatActivity() {
                     true
                 }
                 R.id.navigation_purchase ->{
+                    val intent = Intent(this, PurchaseActivity::class.java)
+                    startActivity(intent)
                     true
                 }
                 else -> false

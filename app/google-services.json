@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "198247426977",
+    "project_id": "personalbarter-8384f",
+    "storage_bucket": "personalbarter-8384f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:198247426977:android:802287f88c4282851479e0",
+        "android_client_info": {
+          "package_name": "com.example.personal_barter"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAxMb6JmvHGU_PwgYPpJbGfoqwPQRD52Mg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

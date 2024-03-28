@@ -59,6 +59,7 @@
         android:layout_margin="5dp">
 
         <EditText
+            android:id="@+id/editText_sale_comment"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="top|left"
