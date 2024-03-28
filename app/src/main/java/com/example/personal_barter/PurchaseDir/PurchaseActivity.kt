@@ -4,6 +4,7 @@ import android.app.Dialog
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
@@ -19,16 +20,62 @@ import com.example.personal_barter.SaleDir.SaleActivity
 import com.example.personal_barter.SignActivityDir.SignInActivity
 import com.example.personal_barter.SignActivityDir.UserInfoActivity
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.ValueEventListener
+import com.google.firebase.database.ktx.database
+import com.google.firebase.ktx.Firebase
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.tasks.await
+import kotlinx.coroutines.withContext
 
 class PurchaseActivity : AppCompatActivity() {
     val recyclerView: RecyclerView by lazy { findViewById(R.id.recyclerView_purchase_list) }
+    val database = Firebase.database
+    val myRef = database.getReference("data")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_purchase)
 
-        var recyclerViewAdapter = PurchaseRecyclerAdapter(listOf("dd", "aa", "cc"))
-        recyclerView.layoutManager = LinearLayoutManager(this)
-        recyclerView.adapter = recyclerViewAdapter
+        var barterList: List<String> = listOf()
+        val job = CoroutineScope(Dispatchers.IO).launch {
+            try {
+                val answer = mutableListOf<String>()
+                val dataSnapshot = myRef.get().await()
+                for (snapshot in dataSnapshot.children) {
+                    val comment = snapshot.child("comment").getValue(String::class.java)
+                    val imageUrl = snapshot.child("imageUrl").getValue(String::class.java)
+                    answer.add("$comment $imageUrl")
+                    Log.d("Data fetch clear", "$comment $imageUrl")
+                }
+                withContext(Dispatchers.Main) {
+                    barterList = answer.map{it.split(" ").first()}
+                    recyclerView.layoutManager = LinearLayoutManager(recyclerView.context)
+                    recyclerView.adapter = PurchaseRecyclerAdapter(barterList)
+                }
+            } catch (e: Exception) {
+                Log.e("getData", "Failed to fetch data: $e")
+            }
+        }
+
+
+
+        myRef.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                for (snapshot in dataSnapshot.children) {
+                    val comment = snapshot.child("comment").getValue(String::class.java)
+                    val imageUrl = snapshot.child("imageUrl").getValue(String::class.java)
+
+                    Log.d("Real-time update", "Comment: $comment, Image URL: $imageUrl")
+                }
+            }
+
+            override fun onCancelled(databaseError: DatabaseError) {
+                Log.e("Real-time update failed", "Failed to update data: $databaseError")
+            }
+        })
 
         val toolbar = findViewById<Toolbar>(R.id.toolbar_purchase)
         setSupportActionBar(toolbar)
@@ -81,4 +128,32 @@ class PurchaseActivity : AppCompatActivity() {
         }
         return super.onOptionsItemSelected(item)
     }
+
+
+    // 비동기로 데이터를 가져오는 Firebase의 addListenerForSingleValueEvent를 사용하고 있습니다.
+    // 이 메서드는 데이터를 가져오는 데 시간이 걸리므로, answer에 데이터가 추가되기 전에 return answer 문이 실행될 수 있습니다.
+    // 따라서 answer가 비어 있는 상태로 반환될 수 있습니다.
+  fun getData(): List<String>{
+      val answer = mutableListOf<String>()
+      myRef.addListenerForSingleValueEvent(object : ValueEventListener {
+          override fun onDataChange(dataSnapshot: DataSnapshot) {
+              for (snapshot in dataSnapshot.children) {
+                  val comment = snapshot.child("comment").getValue(String::class.java)
+                  val imageUrl = snapshot.child("imageUrl").getValue(String::class.java)
+
+                  answer.add("$comment $imageUrl")
+                  Log.d("Data fetch clear", "$comment $imageUrl")
+              }
+          }
+
+          override fun onCancelled(databaseError: DatabaseError) {
+              Log.e("Data fetch failed", "Failed to fetch data: $databaseError")
+          }
+      })
+
+      return answer
+  }
+
+
+
 }
